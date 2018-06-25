@@ -1,5 +1,6 @@
 const Fpm = require('yf-fpm-server').Fpm
 const path = require('path')
+const Process = require('child_process')
 
 const fpm = new Fpm()
 
@@ -13,6 +14,16 @@ biz.addSubModules('foo', {
 fpm.addBizModules(biz)
 
 const scriptPath = path.join(__dirname, 'shell', 'codepull.sh')
+
+const options = {
+    encoding: 'utf8',
+    timeout: 0,
+    maxBuffer: 200 * 1024,
+    killSignal: 'SIGTERM',
+    setsid: false,
+    cwd: null,
+    env: null
+};
 /**
  * /webhook/:upstream/:type/:data
  * upstream: 来源, weixin,fir.im...
@@ -24,14 +35,17 @@ const scriptPath = path.join(__dirname, 'shell', 'codepull.sh')
 // add webhook subscribe
 // 
 const generate = (type) =>{
-    return async (topic, message) => {
+    return (topic, message) => {
         const project = message.url_data
-        try {
-            let result = await fpm.execShell(scriptPath, ['pull', '-' + type, project])
-            fpm.logger.info(result)
-        }catch(e){
-            fpm.logger.error(e)
-        }
+        Process.execFile(scriptPath, ['pull', '-' + type, project], options, (e, stdout, stderr) => {
+            if(e){
+                fpm.logger.error(e)
+                return
+            }
+            fpm.logger.info(stdout)
+        })
+        
+            
     }
 }
 fpm.subscribe('#webhook/codepull/p', generate('p'))

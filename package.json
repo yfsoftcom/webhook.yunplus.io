@@ -2,11 +2,15 @@
   "name": "webhook.yunplus.io",
   "version": "1.0.0",
   "main": "index.js",
+  "scripts": {
+    "dev": "./node_modules/.bin/nodemon ./app.js"
+  },
   "license": "MIT",
   "dependencies": {
     "yf-fpm-server": "^2.4.12"
   },
   "devDependencies": {
-    "babel-runtime": "^6.26.0"
+    "babel-runtime": "^6.26.0",
+    "nodemon": "^1.17.5"
   }
 }
