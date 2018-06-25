@@ -1,6 +1,8 @@
 const Fpm = require('yf-fpm-server').Fpm
 const path = require('path')
 const Process = require('child_process')
+const os = require('os')
+const isWin = os.platform() == 'win32' // win32 if windows
 
 const fpm = new Fpm()
 
@@ -13,17 +15,6 @@ biz.addSubModules('foo', {
 })
 fpm.addBizModules(biz)
 
-const scriptPath = path.join(__dirname, 'shell', 'codepull.sh')
-
-const options = {
-    encoding: 'utf8',
-    timeout: 0,
-    maxBuffer: 200 * 1024,
-    killSignal: 'SIGTERM',
-    setsid: false,
-    cwd: null,
-    env: null
-};
 /**
  * /webhook/:upstream/:type/:data
  * upstream: 来源, weixin,fir.im...
@@ -34,22 +25,21 @@ const options = {
 
 // add webhook subscribe
 // 
-const generate = (type) =>{
-    return (topic, message) => {
+const generate = (script, type) =>{
+    return async (topic, message) => {
+        const scriptPath = path.join(__dirname, 'shell', script + (isWin? '.bat': '.sh'))
         const project = message.url_data
-        Process.execFile(scriptPath, ['pull', '-' + type, project], options, (e, stdout, stderr) => {
-            if(e){
-                fpm.logger.error(e)
-                return
-            }
-            fpm.logger.info(stdout)
-        })
-        
+        try{
+            let result = await fpm.execShell(scriptPath, ['pull', '-' + type, project])
+            fpm.logger.info(result)
+        }catch(e){
+            fpm.logger.error(e)
+        }
             
     }
 }
-fpm.subscribe('#webhook/codepull/p', generate('p'))
-fpm.subscribe('#webhook/codepull/w', generate('w'))
+fpm.subscribe('#webhook/codepull/p', generate('codepull', 'p'))
+fpm.subscribe('#webhook/codepull/w', generate('codepull', 'w'))
 
 fpm.run().then( () => {
     fpm.logger.info('Ready To GO~')
