@@ -54,8 +54,8 @@ const generate = (script, type) =>{
 }
 fpm.subscribe('#webhook/codepull/p', generate('codepull', 'p'))
 fpm.subscribe('#webhook/codepull/w', generate('codepull', 'w'))
-fpm.subscribe('#webhook/docker/p', generate('docker', 'p'))
-fpm.subscribe('#webhook/docker/c', generate('docker', 'c'))
+fpm.subscribe('#webhook/docker/python', generate('docker', 'python'))
+// fpm.subscribe('#webhook/docker/c', generate('docker', 'c'))
 
 fpm.run().then( () => {
     fpm.logger.info('Ready To GO~')

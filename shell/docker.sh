@@ -1,12 +1,9 @@
 #! /bin/sh
-# shell program for code pull when github push webhook
 
 # Clear The Screen
 clear
-
 # TODO: change the dir
 ROOT_DIR="/home/yf/"
-
 
 #没有值
 if [ -z $1 ]; then
