@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "./node_modules/.bin/nodemon ./app.js"
+    "dev": "./node_modules/.bin/nodemon ./app.js",
+    "linux:init": "chmod +x ./shell/*.sh"
   },
   "license": "MIT",
   "dependencies": {
