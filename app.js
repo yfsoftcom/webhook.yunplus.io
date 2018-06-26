@@ -26,20 +26,36 @@ fpm.addBizModules(biz)
 // add webhook subscribe
 // 
 const generate = (script, type) =>{
-    return async (topic, message) => {
-        const scriptPath = path.join(__dirname, 'shell', script + (isWin? '.bat': '.sh'))
+  const scriptPath = path.join(__dirname, 'shell', script + (isWin? '.bat': '.sh'))
+  switch(script){
+    case 'codepull':
+      return async (topic, message) => {
         const project = message.url_data
         try{
-            let result = await fpm.execShell(scriptPath, ['pull', '-' + type, project])
-            fpm.logger.info(result)
+          let result = await fpm.execShell(scriptPath, ['pull', '-' + type, project])
+          fpm.logger.info(result)
         }catch(e){
-            fpm.logger.error(e)
+          fpm.logger.error(e)
         }
-            
+      }
+    case 'docker':
+      return async (topic, message) => {
+        const project = message.url_data
+        try{
+          let result = await fpm.execShell(scriptPath, [type, project])
+          fpm.logger.info(result)
+        }catch(e){
+          fpm.logger.error(e)
+        }
+      }
+
     }
+    
 }
 fpm.subscribe('#webhook/codepull/p', generate('codepull', 'p'))
 fpm.subscribe('#webhook/codepull/w', generate('codepull', 'w'))
+fpm.subscribe('#webhook/docker/p', generate('docker', 'p'))
+fpm.subscribe('#webhook/docker/c', generate('docker', 'c'))
 
 fpm.run().then( () => {
     fpm.logger.info('Ready To GO~')
