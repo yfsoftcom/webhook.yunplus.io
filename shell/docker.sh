@@ -17,7 +17,7 @@ fi
 echo ">>>>>>>> Git Pull Project And Build Dockerfile , Then Restart The Container"
 cd $ROOT_DIR/$2
 git pull
-if [ $1 = 'restart']; then
+if [ $1 = 'restart' ]; then
   # build && run
   docker-compose up --build -d
 fi
