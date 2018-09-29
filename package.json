@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "./node_modules/.bin/nodemon ./app.js",
-    "linux:init": "chmod +x ./shell/*.sh && chmod +x ./scripts/*.sh"
+    "linux:init": "chmod +x ./shell/*.sh && chmod +x ./scripts/*.sh",
+    "startpm2": "pm2 start app.js -i 1 --name webhook"
   },
   "license": "MIT",
   "dependencies": {
