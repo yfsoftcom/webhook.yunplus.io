@@ -6,3 +6,5 @@ config.json
 /db.lock
 /mysqldata
 /logs
+/scripts/*.sh
+/scripts/*.bat

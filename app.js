@@ -26,7 +26,7 @@ fpm.addBizModules(biz)
 // add webhook subscribe
 // 
 const generate = (script, type) =>{
-  const scriptPath = path.join(__dirname, 'shell', script + (isWin? '.bat': '.sh'))
+  let scriptPath = path.join(__dirname, 'shell', script + (isWin? '.bat': '.sh'))
   switch(script){
     case 'codepull':
       return async (topic, message) => {
@@ -48,6 +48,17 @@ const generate = (script, type) =>{
           fpm.logger.error(e)
         }
       }
+    case 'run':
+      return async (topic, message) => {
+        const script_file = message.url_data
+        scriptPath = path.join(__dirname, type, script_file + (isWin? '.bat': '.sh'))
+        try{
+          let result = await fpm.execShell(scriptPath)
+          fpm.logger.info(result)
+        }catch(e){
+          fpm.logger.error(e)
+        }
+      }
 
     }
     
@@ -56,6 +67,8 @@ fpm.subscribe('#webhook/codepull/p', generate('codepull', 'p'))
 fpm.subscribe('#webhook/codepull/w', generate('codepull', 'w'))
 fpm.subscribe('#webhook/docker/restart', generate('docker', 'restart'))
 // fpm.subscribe('#webhook/docker/c', generate('docker', 'c'))
+
+fpm.subscribe('#webhook/run/scripts', generate('run', 'scripts'));
 
 fpm.run().then( () => {
     fpm.logger.info('Ready To GO~')
