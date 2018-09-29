@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "./node_modules/.bin/nodemon ./app.js",
-    "linux:init": "chmod +x ./shell/*.sh"
+    "linux:init": "chmod +x ./shell/*.sh && chmod +x ./scripts/*.sh"
   },
   "license": "MIT",
   "dependencies": {
