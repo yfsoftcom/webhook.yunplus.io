@@ -10,6 +10,7 @@ const fs = require('fs');
 const readdirAsync = util.promisify(fs.readdir);
 const readfileAsync = util.promisify(fs.readFile);
 const chmodAsync = util.promisify(fs.chmod);
+const unlinkAsync = util.promisify(fs.unlink);
 const writefileAsync = util.promisify(fs.writeFile);
 const isWin = os.platform() == 'win32' // win32 if windows
 const assert = require('assert');
@@ -38,6 +39,16 @@ biz.addSubModules('scripts', {
     const scriptPath = path.join(CWD, 'scripts', script)
     try {
       return await readfileAsync(scriptPath, 'utf8');
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  },
+  delete: async args => {
+    const { script } = args;
+    const scriptPath = path.join(CWD, 'scripts', script)
+    try {
+      await unlinkAsync(scriptPath);
+      return 1;
     } catch (error) {
       return Promise.reject(error);
     }

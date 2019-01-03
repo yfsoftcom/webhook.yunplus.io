@@ -61,6 +61,7 @@
                       <button ng-click="run(script)" class="button-primary-outlined button-small button-round">Run</button>
                       <button ng-click="edit(script)" class="button-primary-outlined button-small button-round">Edit</button>
                       <button ng-click="hook(script)" class="button-primary-outlined button-small button-round">Hook</button>
+                      <button ng-click="remove(script)" class="button-danger-outlined button-small button-round">Remove</button>
                     </td>
                   </tr>
                   <tr ng-if="scripts.length == 0">
@@ -161,6 +162,18 @@
             .invoke({ script })
             .then(function(data){
               $scope.console = data.data;
+              $scope.$apply();
+            }).catch(function(e){
+              $scope.console = e.message;
+            });
+        }
+        $scope.remove = function(script){
+          if(!confirm('Are you sure to Delete this script?'))
+            return;
+          new Func('scripts.delete')
+            .invoke({ script })
+            .then(function(data){
+              fetch();
               $scope.$apply();
             }).catch(function(e){
               $scope.console = e.message;
