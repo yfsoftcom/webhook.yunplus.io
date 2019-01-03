@@ -60,6 +60,7 @@
                     <td>
                       <button ng-click="run(script)" class="button-primary-outlined button-small button-round">Run</button>
                       <button ng-click="edit(script)" class="button-primary-outlined button-small button-round">Edit</button>
+                      <button ng-click="hook(script)" class="button-primary-outlined button-small button-round">Hook</button>
                     </td>
                   </tr>
                   <tr ng-if="scripts.length == 0">
@@ -164,6 +165,9 @@
             }).catch(function(e){
               $scope.console = e.message;
             });
+        }
+        $scope.hook = function(script){
+          alert(`curl -H "Content-Type:application/json" -X POST -d {} http://${location.hostname}:${location.port}/webhook/run/scripts/${script.split('.')[0]}`)
         }
       });
     </script>
