@@ -10,4 +10,4 @@ $ chmod +x shell/*
 
 ### test
 
-`curl -H "Content-Type:application/json" -X POST -d {} http://127.0.0.1:9003/webhook/run/scripts/test`
+`curl -H "Content-Type:application/json" -X POST -d {} http://127.0.0.1:9999/webhook/run/scripts/test34`
