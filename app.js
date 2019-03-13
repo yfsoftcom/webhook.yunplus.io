@@ -1,6 +1,7 @@
 const { Fpm } = require('yf-fpm-server');
 const _ = require('lodash');
 const Views = require('koa-views');
+const Static = require('koa-static');
 const path = require('path');
 const os = require('os');
 const util = require('util');
@@ -104,7 +105,7 @@ fpm.subscribe('#webhook/run/scripts', generate('run', 'scripts'));
 
 fpm.run().then( () => {
   const { app } = fpm;
-
+  app.use(Static(path.join(CWD, 'public')))
   app.use(Views(path.join(CWD, 'views'), {
     extension: 'html',
     map: { html: 'nunjucks' },

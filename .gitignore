@@ -1,4 +1,4 @@
-/node_modules
+node_modules
 /.vscode
 *.log
 config.json
@@ -7,3 +7,4 @@ config.json
 /logs
 /scripts/*.sh
 /scripts/*.bat
+*-lock.json
