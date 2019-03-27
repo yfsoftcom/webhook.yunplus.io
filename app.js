@@ -112,8 +112,8 @@ fpm.run().then( () => {
   }))
 
   const router = fpm.createRouter();
-  router.get('/console', async ctx => {
-    await ctx.render('main.html')
+  router.get('/', async ctx => {
+    await ctx.render('index.html')
   })
   fpm.bindRouter(router);
 })
