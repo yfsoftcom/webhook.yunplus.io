@@ -105,10 +105,10 @@ fpm.subscribe('#webhook/run/scripts', generate('run', 'scripts'));
 
 fpm.run().then( () => {
   const { app } = fpm;
-  app.use(Static(path.join(CWD, 'public')))
-  app.use(Views(path.join(CWD, 'views'), {
+  app.use(Static(path.join(CWD, 'node_modules', 'ui.webhook.yunplus.io', 'build')))
+  app.use(Views(path.join(CWD, 'node_modules', 'ui.webhook.yunplus.io', 'build'), {
     extension: 'html',
-    map: { html: 'nunjucks' },
+    // map: { html: 'nunjucks' },
   }))
 
   const router = fpm.createRouter();
