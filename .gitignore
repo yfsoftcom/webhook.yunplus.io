@@ -8,3 +8,5 @@ config.json
 /scripts/*.sh
 /scripts/*.bat
 *-lock.json
+/public
+/views/index.html
