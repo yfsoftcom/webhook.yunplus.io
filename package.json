@@ -15,6 +15,7 @@
     "koa-views": "^6.1.5",
     "lodash": "^4.17.11",
     "nunjucks": "^3.1.6",
+    "ui.webhook.yunplus.io": "^0.1.0",
     "yf-fpm-server": "^2.5.0"
   },
   "devDependencies": {
