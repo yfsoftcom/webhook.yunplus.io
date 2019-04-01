@@ -11,3 +11,6 @@ $ chmod +x shell/*
 ### test
 
 `curl -H "Content-Type:application/json" -X POST -d {} http://127.0.0.1:9999/webhook/run/scripts/test34`
+
+### TODO：
+- Add a password for run the script
