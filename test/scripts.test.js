@@ -16,4 +16,13 @@ describe('scripts Biz Test Unit', function(){
       })
   })
 
+  it('Auth', function(done){
+    const func = new Func('scripts.auth');
+    func.invoke({ password: '123123123'})
+      .then(function(data){
+        done();
+      }).catch(function(err){
+        done(err);
+      })
+  })
 });

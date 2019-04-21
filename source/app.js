@@ -6,7 +6,9 @@ const path = require('path');
 const os = require('os');
 const util = require('util');
 const fs = require('fs');
+const debug = require('debug')('webhook.yunplus.io');
 
+const { encodePassword, comparePassword } = require('./kit.js');
 
 const readdirAsync = util.promisify(fs.readdir);
 const readfileAsync = util.promisify(fs.readFile);
@@ -22,6 +24,8 @@ const fpm = new Fpm()
 
 const biz = fpm.createBiz('0.0.1')
 
+// the default password: 123123123
+const { secret } = fpm.getConfig('webhook', { secret: 'a1c8c73885cb1ccdd83f369b709563a2' });
 biz.addSubModules('scripts', {
   list: async args => {
     try {
@@ -77,6 +81,17 @@ biz.addSubModules('scripts', {
     }catch(e){
       return Promise.reject(e)
     }
+  },
+  // compare the password
+  auth: async args => {
+    const { password } = args;
+    try{
+      assert(comparePassword( password, secret), 'password error');
+      return 1;
+    }catch(e){
+
+      return Promise.reject(e);
+    }
   }
 })
 fpm.addBizModules(biz)
@@ -98,7 +113,6 @@ const generate = (script, type) =>{
       }
 
     }
-    
 }
 
 fpm.subscribe('#webhook/run/scripts', generate('run', 'scripts'));
@@ -108,7 +122,6 @@ fpm.run().then( () => {
   app.use(Static(path.join(CWD, 'node_modules', 'ui.webhook.yunplus.io', 'build')))
   app.use(Views(path.join(CWD, 'node_modules', 'ui.webhook.yunplus.io', 'build'), {
     extension: 'html',
-    // map: { html: 'nunjucks' },
   }))
 
   const router = fpm.createRouter();
